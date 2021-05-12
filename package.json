@@ -4,17 +4,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "socket": "node server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^4.0.2"
   },
   "devDependencies": {
+    "@types/node": "^15.0.2",
     "@vitejs/plugin-vue": "^1.2.2",
     "@vue/compiler-sfc": "^3.0.5",
     "autoprefixer": "^10.2.5",
     "chance": "^1.1.7",
+    "pixi.js": "^6.0.4",
     "postcss": "^8.2.14",
     "socket.io-client": "^4.0.2",
     "tailwindcss": "^2.1.2",

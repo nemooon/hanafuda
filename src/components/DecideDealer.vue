@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-2 gap-10 h-screen place-items-center">
+  <div class="grid grid-cols-2 gap-10 h-64 place-items-center">
     <div v-for="(card, i) in dd.stage" :key="i">
       <card v-bind="card"></card>
     </div>
@@ -8,11 +8,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import cards from "../hanafuda/cards";
-import DecideDealer from "../hanafuda/DecideDealer";
-import Player from "../hanafuda/Player";
+import Card from './Card.vue';
+import cards from '../hanafuda/cards';
+import DecideDealer from '../hanafuda/DecideDealer';
+import Player from '../hanafuda/Player';
 
 export default defineComponent({
+  components: {
+    Card,
+  },
   setup() {
     const player1 = new Player('プレイヤー1');
     const player2 = new Player('プレイヤー2');

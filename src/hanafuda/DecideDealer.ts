@@ -25,10 +25,13 @@ export default class DecideDealer {
   private stage: Card[];
   private players: Player[];
   private choices: Choice[];
-  private dealer: Player;
+  private dealer: Player | undefined;
 
   constructor(players: Player[]) {
+    this.stage = []
     this.players = players
+    this.choices = []
+    this.dealer = undefined
 
     this.initialize()
   }
