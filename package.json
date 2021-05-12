@@ -14,10 +14,12 @@
     "@vitejs/plugin-vue": "^1.2.2",
     "@vue/compiler-sfc": "^3.0.5",
     "autoprefixer": "^10.2.5",
+    "chance": "^1.1.7",
     "postcss": "^8.2.14",
     "socket.io-client": "^4.0.2",
     "tailwindcss": "^2.1.2",
     "vite": "^2.2.3",
-    "vue": "^3.0.11"
+    "vue": "^3.0.11",
+    "vuex": "^4.0.0"
   }
 }
