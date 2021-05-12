@@ -38,7 +38,7 @@ export const store = createStore<State>({
   plugins: debug ? [createLogger()] : [],
 });
 
-const socket = io(':3333');
+const socket = io();
 
 socket.on('message', (message: string) => {
   store.commit('addMessage', message)
