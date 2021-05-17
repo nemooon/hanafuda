@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import Card from './Card.vue';
+import { useStore } from '../store'
 import cards from '../hanafuda/cards';
 import DecideDealer from '../hanafuda/DecideDealer';
 import Player from '../hanafuda/Player';
@@ -18,6 +19,11 @@ export default defineComponent({
     Card,
   },
   setup() {
+
+    const store = useStore()
+    console.log(store.state.DecideDealer)
+    // computed(() => store.state)
+
     const player1 = new Player('プレイヤー1');
     const player2 = new Player('プレイヤー2');
     const dd = new DecideDealer([player1, player2]);

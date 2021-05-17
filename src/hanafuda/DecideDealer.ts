@@ -40,7 +40,11 @@ export default class DecideDealer {
     this.stage = []
     this.choices = []
     for (let i = 0; i < this.players.length; i++) {
-      this.stage.push(chance.falsy({ pool: cards }))
+      const pool = cards.filter((card: Card) => {
+        const month = this.stage.map((card: Card) => card.month)
+        return month.includes(card.month) === false
+      })
+      this.stage.push(chance.falsy({ pool }))
     }
   }
 

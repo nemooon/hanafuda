@@ -6,7 +6,21 @@
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",
-    "types": ["vite/client", "node"]
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "newLine": "lf",
+    "sourceMap": true,
+    "types": ["vite/client", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

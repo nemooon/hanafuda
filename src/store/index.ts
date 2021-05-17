@@ -1,45 +1,24 @@
 import { InjectionKey } from 'vue'
 import { createStore, createLogger, useStore as baseUseStore, Store } from 'vuex'
-import { io } from 'socket.io-client';
+import { RootState } from './types';
+import { chat } from './Chat';
 
 const debug = process.env.NODE_ENV !== 'production'
+const plugins = debug ? [createLogger({})] : []
 
-export interface State {
-  messages: string[],
-}
-
-export const key: InjectionKey<Store<State>> = Symbol();
+export const key: InjectionKey<Store<RootState>> = Symbol();
 
 export function useStore () {
   return baseUseStore(key);
 }
 
-export const store = createStore<State>({
+export const store = createStore<RootState>({
+  plugins,
+  modules: {
+    chat,
+  },
   strict: debug,
   state: {
-    messages: []
+    version: '1.0.0',
   },
-  getters: {
-    messages(state: State) {
-      return state.messages
-    },
-  },
-  mutations: {
-    addMessage(state: State, message: string) {
-      state.messages.push(message)
-    },
-  },
-  actions: {
-    send({ commit }, message: string) {
-      commit('addMessage', message)
-      socket.emit('new message', message);
-    },
-  },
-  plugins: debug ? [createLogger()] : [],
-});
-
-const socket = io();
-
-socket.on('message', (message: string) => {
-  store.commit('addMessage', message)
 });

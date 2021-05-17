@@ -1,5 +1,6 @@
 <template>
-  <img class="card" :src="image" :alt="title">
+  <img v-if="open" class="card" :src="image" :alt="title">
+  <div class="card bg-black"></div>
 </template>
 
 <style scoped>
@@ -18,6 +19,7 @@ export default defineComponent({
     title: String,
     month: Number,
     image: String,
+    open: Boolean,
   },
   // setup(props) {
   //   console.log(props)
