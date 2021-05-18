@@ -9,12 +9,12 @@
       </div>
       <div ref="log" class="flex-1 overflow-y-auto px-3 py-2 space-y-1">
         <div v-for="message in messages" :key="message.id" class="relative flex items-baseline text-white text-xs">
-          <div class="mr-2 text-green-500">{{ message.sender }}</div>
+          <div class="mr-2 text-green-500">{{ message.sender.name }}</div>
           <div class="">{{ message.body }}</div>
           <div class="absolute right-0 top-0 text-opacity-50">{{ format(message.date, 'kk:mm') }}</div>
         </div>
         <div v-if="typing.length > 0" class="text-white text-xs">
-          {{ typing.join(',') }}さんが入力中...
+          {{ typing.map(user => user.name).join(',') }}さんが入力中...
         </div>
       </div>
       <div class="flex-none border-t border-gray-600">

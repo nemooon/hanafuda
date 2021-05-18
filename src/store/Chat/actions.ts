@@ -34,17 +34,23 @@ const actions: ActionTree<ChatState, RootState> = {
     socket.off('chat/message')
   },
 
-  input: async ({}, typing: boolean) => {
+  input: async ({ rootGetters }, typing: boolean) => {
     const payload = {
-      sender: 'プレイヤー',
+      sender: {
+        user: rootGetters['auth/user'],
+        name: rootGetters['auth/nickname'],
+      },
       typing,
     }
     socket.emit('chat/input', payload)
   },
 
-  say: async ({ commit }, message: string) => {
+  say: async ({ commit, rootGetters }, message: string) => {
     const payload = {
-      sender: 'プレイヤー',
+      sender: {
+        user: rootGetters['auth/user'],
+        name: rootGetters['auth/nickname'],
+      },
       body: message,
     }
     socket.emit('chat/say', payload, message => {

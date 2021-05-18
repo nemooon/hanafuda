@@ -6,13 +6,14 @@ const mutations: MutationTree<ChatState> = {
     state.messages = payload.messages
   },
   typing: (state, payload) => {
+    const typing = state.typing.find((s: Sender) => s.user && s.user.uid == payload.sender.user.uid)
     if (payload.typing) {
-      if (state.typing.indexOf(payload.sender) === -1) {
+      if (typing === undefined) {
         state.typing.push(payload.sender)
       }
     } else {
-      if (state.typing.indexOf(payload.sender) !== -1) {
-        state.typing = state.typing.filter((s: Sender) => s !== payload.sender);
+      if (typing !== undefined) {
+        state.typing = state.typing.filter((s: Sender) => !s.user || s.user.uid !== payload.sender.user.uid);
       }
     }
   },

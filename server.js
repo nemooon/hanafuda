@@ -1,6 +1,6 @@
 const httpServer = require("http").createServer();
 const Chance = require('chance');
-const setHours = require('date-fns/setHours')
+const set = require('date-fns/set')
 
 const io = require("socket.io")(httpServer, {
   cors: {
@@ -35,20 +35,20 @@ io.on('connection', socket => {
       messages: [
         {
           id: chance.guid(),
-          date: setHours(new Date(), 9),
-          sender: 'プレイヤー',
+          date: set(new Date(), { hours: 9 }),
+          sender: { name: 'プレイヤー' },
           body: 'おはよう！！',
         },
         {
           id: chance.guid(),
-          date: setHours(new Date(), 12),
-          sender: 'プレイヤー',
+          date: set(new Date(), { hours: 12 }),
+          sender: { name: 'プレイヤー' },
           body: 'こんにちは！',
         },
         {
           id: chance.guid(),
-          date: setHours(new Date(), 20),
-          sender: 'プレイヤー',
+          date: set(new Date(), { hours: 20 }),
+          sender: { name: 'プレイヤー' },
           body: 'こんばんは！',
         },
       ],
