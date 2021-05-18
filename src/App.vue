@@ -2,19 +2,26 @@
   <transition name="fade" mode="out-in">
     <div v-if="started == false" class="flex items-center justify-center w-screen h-screen bg-gray-100">
       <transition name="fade" mode="out-in">
-        <div v-if="authenticate" class="flex flex-col items-center justify-center w-64 h-64 rounded-lg bg-white">
-          <div class="mb-6 text-2xl text-gray-700 text-center font-bold">
+        <div v-if="authenticate" class="flex flex-col items-center justify-center p-10 rounded bg-white shadow">
+          <div class="mb-8 text-3xl text-gray-700 text-center font-bold">
             こいこい！
           </div>
-          <div  class="w-48 h-24 space-y-4">
-            <div>
-              <input class="px-3 py-2 w-full rounded border md:text-sm text-center outline-none appearance-none" type="text" v-model="nickname" placeholder="プレイヤーネーム">
+          <form class="w-48" @submit.prevent="start">
+            <div class="space-y-3">
+              <div>
+                <label class="block mb-1 w-full text-xs text-gray-600">プレイヤーネーム</label>
+                <input class="block px-3 py-2 w-full rounded border md:text-sm text-center outline-none appearance-none" type="text" v-model="nickname">
+              </div>
+              <div>
+                <label class="block mb-1 w-full text-xs text-gray-600">ルーム</label>
+                <input class="block px-3 py-2 w-full rounded border md:text-sm text-center outline-none appearance-none" type="text" v-model="roomname">
+              </div>
             </div>
-            <div>
-              <button class="px-3 py-2 w-full rounded bg-blue-600 text-sm text-center text-white outline-none appearance-none" @click.prevent="start">スタート</button>
+            <div class="mt-8">
+              <button class="block px-3 py-2 w-full rounded text-sm text-center text-white outline-none appearance-none" :class="startable ? 'bg-blue-600' : 'bg-gray-300'" type="submit" :disabled="!startable">スタート</button>
             </div>
-          </div>
-          <div class="mt-6 text-xs text-gray-400 text-center">
+          </form>
+          <div class="mt-4 text-xs text-gray-400 text-center">
             version {{ version }}
           </div>
         </div>
@@ -28,7 +35,7 @@
       <chat></chat>
     </div>
   </transition>
-  <div v-if="authenticate" class="absolute left-3 bottom-3">
+  <div v-if="authenticate" class="absolute left-3 top-3">
     <div class="text-gray-500 text-xs">{{ me.name }}</div>
   </div>
 </template>
@@ -50,7 +57,10 @@ export default defineComponent({
 
     const state = reactive({
       nickname: '',
+      roomname: '',
     })
+
+    const startable = computed(() => state.nickname != '' && state.roomname != '')
 
     const version = computed(() => store.state.version)
     const started = computed(() => store.state.started)
@@ -61,19 +71,22 @@ export default defineComponent({
 
     watch(authenticate, (authenticate) => {
       if (authenticate) {
-        state.nickname = me.value.name
+        state.nickname = me.value ? me.value.name : ''
       }
     })
 
     return {
       ...toRefs(state),
+      startable,
       version,
       started,
       authenticate,
       me,
       start: () => {
-        store.dispatch('auth/nickname', { nickname: state.nickname })
-        store.dispatch('start')
+        if (state.nickname != '') {
+          store.dispatch('auth/nickname', { nickname: state.nickname })
+          store.dispatch('start')
+        }
       }
     };
   },
