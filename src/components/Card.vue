@@ -1,6 +1,6 @@
 <template>
   <img v-if="open" class="card" :src="image" :alt="title">
-  <div class="card bg-black"></div>
+  <div v-else class="card bg-black"></div>
 </template>
 
 <style scoped>

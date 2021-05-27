@@ -18,7 +18,6 @@ export function useStore () {
 
 const state: RootState = {
   version: '0.0.2',
-  started: false,
 };
 
 export const store = createStore<RootState>({

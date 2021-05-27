@@ -51,6 +51,60 @@ io.on('connection', socket => {
           sender: { name: 'プレイヤー' },
           body: 'こんばんは！',
         },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 9 }),
+          sender: { name: 'プレイヤー' },
+          body: 'おはよう！！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 12 }),
+          sender: { name: 'プレイヤー' },
+          body: 'こんにちは！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 20 }),
+          sender: { name: 'プレイヤー' },
+          body: 'こんばんは！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 9 }),
+          sender: { name: 'プレイヤー' },
+          body: 'おはよう！！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 12 }),
+          sender: { name: 'プレイヤー' },
+          body: 'こんにちは！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 20 }),
+          sender: { name: 'プレイヤー' },
+          body: 'こんばんは！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 9 }),
+          sender: { name: 'プレイヤー' },
+          body: 'おはよう！！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 12 }),
+          sender: { name: 'プレイヤー' },
+          body: 'こんにちは！',
+        },
+        {
+          id: chance.guid(),
+          date: set(new Date(), { hours: 20 }),
+          sender: { name: 'プレイヤー' },
+          body: 'こんばんは！',
+        },
       ],
     });
   });

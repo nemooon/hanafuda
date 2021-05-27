@@ -1,23 +1,31 @@
 import { ActionTree } from 'vuex';
-import { getAuth, onAuthStateChanged, signInAnonymously, updateProfile } from "firebase/auth";
-import { socket } from '@/socket';
+import { getAuth, onAuthStateChanged, signInWithPopup, signOut, TwitterAuthProvider, updateProfile } from "firebase/auth";
 import { RootState } from '@/store/types';
 import { AuthState, User } from './types';
-import { parseISO } from 'date-fns'
 
 const auth = getAuth()
 
 const actions: ActionTree<AuthState, RootState> = {
 
-  signIn: async ({ commit }) => {
+  init: async ({ commit }) => {
     onAuthStateChanged(auth, user => {
       if (user) {
-        commit('signin', user)
+        commit('signin', { user })
       } else {
-        // commit('singout')
+        commit('singout')
       }
     })
-    signInAnonymously(auth);
+  },
+
+  signInTwitter: async ({ commit }) => {
+    const provider = new TwitterAuthProvider()
+    signInWithPopup(auth, provider).then(() => {}, error => {
+      console.error(error)
+    })
+  },
+
+  signOut: async ({ commit }) => {
+    signOut(auth)
   },
 
   nickname: async ({ commit }, payload) => {

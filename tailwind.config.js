@@ -1,11 +1,11 @@
 module.exports = {
   theme: {
     extend: {
-      gridTemplateColumns: {
-        'app': 'minmax(375px, 56.25vw)',
+      colors: {
+        twitter: '#1DA1F2',
       },
-      gridTemplateRows: {
-        'app': '1fr 256px',
+      fontSize: {
+        '2xs': '0.625rem',
       },
     },
   }

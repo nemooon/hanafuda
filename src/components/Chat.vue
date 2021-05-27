@@ -1,30 +1,33 @@
 <template>
-  <div class="bg-gray-800">
+  <div class="w-full h-full">
     <div class="flex flex-col h-full">
-      <div class="flex-none flex items-center px-3 py-2 border-b border-gray-600 text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
-        </svg>
-        <div class="ml-1 text-xs">チャット</div>
-      </div>
-      <div ref="log" class="flex-1 overflow-y-auto px-3 py-2 space-y-1">
-        <div v-for="message in messages" :key="message.id" class="relative flex items-baseline text-white text-xs">
-          <div class="mr-2 text-green-500">{{ message.sender.name }}</div>
-          <div class="">{{ message.body }}</div>
-          <div class="absolute right-0 top-0 text-opacity-50">{{ format(message.date, 'kk:mm') }}</div>
+      <div class="relative flex-1">
+        <div ref="log" class="absolute inset-0 overflow-y-auto scrollbar-log">
+          <div class="flex flex-col justify-end px-2 py-4 min-h-full space-y-4">
+            <div v-for="message in messages" :key="message.id" class="space-y-1">
+              <div class="flex items-center text-xs">
+                <div class="w-10 opacity-30">{{ format(message.date, 'kk:mm') }}</div>
+                <div class="font-bold truncate">{{ message.sender.name }}</div>
+              </div>
+              <div class="pl-10 text-sm">{{ message.body }}</div>
+            </div>
+          </div>
         </div>
-        <div v-if="typing.length > 0" class="text-white text-xs">
+        <div v-if="messages.length == 0" class="absolute inset-0 flex items-center justify-center h-full">
+          <div class="text-2xs opacity-30">まだメッセージはありません</div>
+        </div>
+        <div v-if="typing.length > 0" class="absolute inset-x-2 bottom-0 text-xs">
           {{ typing.map(user => user.name).join(',') }}さんが入力中...
         </div>
       </div>
-      <div class="flex-none border-t border-gray-600">
+      <div class="flex-none px-2 pb-2">
         <form @submit.prevent="say">
-          <div class="relative">
-            <input class="px-3 py-2 w-full h-11 text-white md:text-xs rounded-none bg-gray-800 outline-none appearance-none" v-model="message" type="text" placeholder="チャット入力..." @input="input">
+          <div class="relative border border-gray-200 rounded">
+            <input class="px-3 py-2 w-full h-11 md:text-xs rounded-none bg-transparent outline-none appearance-none" v-model="message" type="text" :placeholder="`#${room} へのメッセージ`" @input="input">
             <div class="absolute right-3 top-3 flex items-center space-x-1">
-              <button class="text-white text-xs outline-none appearance-none" type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+              <button class="text-xs outline-none appearance-none" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform rotate-90 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                 </svg>
               </button>
             </div>
@@ -36,6 +39,15 @@
 </template>
 
 <style lang="postcss" scoped>
+.scrollbar-log::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+.scrollbar-log::-webkit-scrollbar-track {
+  @apply m-1 bg-gray-100 rounded-full;
+}
+.scrollbar-log::-webkit-scrollbar-thumb {
+  @apply m-1 bg-gray-300 rounded-full;
+}
 </style>
 
 <script lang="ts">
@@ -45,7 +57,10 @@ import { format } from 'date-fns'
 import { Message } from '@/store/Chat/types'
 
 export default defineComponent({
-  setup() {
+  props: {
+    room: String,
+  },
+  setup(props) {
     const store = useStore()
 
     const state = reactive({
@@ -63,7 +78,7 @@ export default defineComponent({
 
     const typing = computed(() => store.state.chat.typing)
     const messages = computed(() => store.state.chat.messages)
-    watch(messages.value, () => logScroll())
+    watch(() => messages.value.length, () => logScroll())
 
     onMounted(() => {
       store.dispatch('chat/connect')
@@ -71,12 +86,14 @@ export default defineComponent({
     })
 
     return {
+      ...props,
       ...toRefs(state),
       log,
       typing,
       messages,
       format,
       say: () => {
+        store.dispatch('chat/input', false)
         store.dispatch('chat/say', state.message)
         state.message = ''
       },
