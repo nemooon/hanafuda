@@ -6,6 +6,7 @@ import mutations from './mutations';
 import { RootState } from './types';
 import { auth } from './Auth';
 import { chat } from './Chat';
+import { room } from './room';
 
 const debug = process.env.NODE_ENV !== 'production'
 const plugins = debug ? [createLogger({})] : []
@@ -25,6 +26,7 @@ export const store = createStore<RootState>({
   modules: {
     auth,
     chat,
+    room,
   },
   strict: debug,
   state,

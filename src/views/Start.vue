@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center w-screen h-screen bg-gray-100">
+  <div class="fixed inset-safe flex items-center justify-center bg-gray-100 overflow-hidden">
     <transition name="fade" mode="out-in">
       <div v-if="initialized" class="flex flex-col items-center justify-center p-10 w-80 rounded bg-white shadow">
         <div class="mb-8 text-3xl text-gray-700 text-center font-bold">

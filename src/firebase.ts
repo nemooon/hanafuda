@@ -19,4 +19,4 @@ import { getFirestore } from 'firebase/firestore';
 // Initialize Firebase
 export const analytics = getAnalytics(firebaseApp);
 export const auth = getAuth(firebaseApp);
-// export const firestore = getFirestore(firebaseApp);
+export const db = getFirestore(firebaseApp);

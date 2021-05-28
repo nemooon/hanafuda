@@ -54,6 +54,7 @@
 import { computed, defineComponent, nextTick, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useStore } from '@/store'
 import { format } from 'date-fns'
+// import { Message } from '@/store/Chat/types'
 
 export default defineComponent({
   props: {
@@ -61,8 +62,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
-
-    store.dispatch('room/messages/connect', props.room)
 
     const state = reactive({
       message: '',
@@ -77,13 +76,12 @@ export default defineComponent({
       })
     }
 
-    const typing = computed(() => store.state.chat.typing)
-    // const messages = computed(() => store.state.chat.messages)
-    const messages = computed(() => store.state.room.messages.messages)
+    // const typing = computed(() => store.state.chat.typing)
+    const messages = computed(() => store.state.chat.messages)
     watch(() => messages.value.length, () => logScroll())
 
     onMounted(() => {
-      // store.dispatch('chat/connect')
+      store.dispatch('chat/connect')
       logScroll()
     })
 
@@ -95,13 +93,12 @@ export default defineComponent({
       messages,
       format,
       say: () => {
-        // store.dispatch('chat/input', false)
-        store.dispatch('room/messages/say', state.message)
-        // store.dispatch('chat/say', state.message)
+        store.dispatch('chat/input', false)
+        store.dispatch('chat/say', state.message)
         state.message = ''
       },
       input: () => {
-        // store.dispatch('chat/input', state.message != '')
+        store.dispatch('chat/input', state.message != '')
       },
     }
 

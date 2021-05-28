@@ -66,11 +66,11 @@
             <div class="">
               <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
                 <span class="flex-none">
-                  <i v-if="true" class="fas fa-unlock fa-fw"></i>
-                  <i v-else class="fas fa-lock fa-fw"></i>
+                  <i v-if="settings.private" class="fas fa-lock fa-fw"></i>
+                  <i v-else class="fas fa-unlock fa-fw"></i>
                 </span>
                 <span class="flex-none ml-4 mr-auto">公開設定</span>
-                <span class="mx-4 text-base opacity-70 truncate">公開</span>
+                <span class="mx-4 text-base opacity-70 truncate">{{ settings.private ? 'プライベート' : 'オープン'}}</span>
                 <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
               </a>
             </div>
@@ -78,7 +78,7 @@
               <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
                 <span class="flex-none"><i class="fas fa-user-edit fa-fw"></i></span>
                 <span class="flex-none ml-4 mr-auto">ニックネーム</span>
-                <span class="flex-auto mx-4 text-base opacity-70 truncate">{{ me?.name }}じびえじびえじびえじびえじびえじびえ</span>
+                <span class="flex-auto mx-4 text-base opacity-70 truncate">{{ me?.name }}</span>
                 <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
               </a>
             </div>
@@ -137,12 +137,10 @@
         <div class="flex space-x-1">
           <a class="flex items-center px-2 hover:bg-gray-100" href="#" @click.prevent="">
             <span class="mr-1 font-bold">#{{ room }}</span>
-            <svg v-if="true" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
-            </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-            </svg>
+          </a>
+          <a class="flex items-center px-2 hover:bg-gray-100" href="#" @click.prevent="">
+            <i v-if="settings.private" class="fas fa-lock fa-fw"></i>
+            <i v-else class="fas fa-unlock fa-fw"></i>
           </a>
           <a class="flex items-center px-2 hover:bg-gray-100" href="#" @click.prevent="">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -198,10 +196,13 @@ export default defineComponent({
     const store = useStore()
     const version = computed(() => store.state.version)
     const me = computed(() => store.getters['auth/user'])
+    const settings = computed(() => store.getters['room/settings'])
 
     const state = reactive<ViewState>({
       menu: false,
     })
+
+    store.dispatch('room/connect', room.value)
 
     onMounted(() => {
     })
@@ -211,6 +212,7 @@ export default defineComponent({
       room,
       version,
       me,
+      settings,
       toggleMenu: () => {
         state.menu = !state.menu
       },

@@ -1,4 +1,6 @@
 import { ActionTree } from 'vuex';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase';
 import { socket } from '@/socket';
 import { RootState } from '@/store/types';
 import { ChatState, Message } from './types';
