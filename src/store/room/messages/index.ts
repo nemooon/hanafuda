@@ -10,6 +10,7 @@ const state: MessagesState = {
   unsubscribe: null,
   messages: [],
   typing: [],
+  menu: false,
 };
 
 export const messages: Module<MessagesState, RootState> = {

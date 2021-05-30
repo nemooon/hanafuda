@@ -6,6 +6,9 @@
           こいこい！
         </div>
         <form v-if="authenticate" class="w-full" @submit.prevent="start">
+          <datalist id="rooms">
+            <option v-for="room in rooms" :key="room" :value="room" />
+          </datalist>
           <div class="space-y-3">
             <div>
               <label class="flex items-baseline mb-1 w-full text-xs text-gray-600">
@@ -25,7 +28,7 @@
             </div>
             <div>
               <label class="block mb-1 w-full text-xs text-gray-600">ルーム</label>
-              <input class="block px-3 py-2 w-full rounded border md:text-sm outline-none appearance-none" type="text" v-model="roomname">
+              <input class="block px-3 py-2 w-full rounded border md:text-sm outline-none appearance-none" type="text" v-model="roomname" autocomplete="on" list="rooms">
             </div>
           </div>
           <div class="mt-8">
@@ -47,7 +50,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { computed, onMounted, reactive, toRefs, watch } from "@vue/runtime-core";
+import { computed, onBeforeUnmount, onMounted, reactive, toRefs, watch } from "@vue/runtime-core";
 import { useStore } from '@/store'
 import { router } from '@/router'
 
@@ -63,14 +66,20 @@ export default defineComponent({
     const initialized = computed(() => store.getters['auth/initialized'])
     const authenticate = computed(() => store.getters['auth/authenticate'])
     const me = computed(() => store.getters['auth/user'])
+    const rooms = computed(() => store.state.rooms.list)
 
-    console.log(me.value)
     const state = reactive<ComponentState>({
       nickname: me.value ? me.value.name : '',
-      roomname: 'koikoi',
+      roomname: '',
     })
 
     const startable = computed(() => state.nickname != '' && state.roomname != '')
+
+    store.dispatch('rooms/connect')
+
+    onBeforeUnmount(() => {
+      store.dispatch('rooms/disconnect')
+    })
 
     watch(authenticate, (authenticate) => {
       if (authenticate) {
@@ -85,6 +94,7 @@ export default defineComponent({
       initialized,
       authenticate,
       me,
+      rooms,
       signInTwitter: () => store.dispatch('auth/signInTwitter'),
       signOut: () => store.dispatch('auth/signOut'),
       start: () => {

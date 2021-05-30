@@ -6,12 +6,8 @@ export default defineConfig({
   resolve: {
     alias: [
       {find: '@', replacement: '/src'},
+      {find: 'package.json', replacement: '/package.json'},
     ],
   },
-  plugins: [vue()],
-  server: {
-    proxy: {
-      '/socket.io/': 'http://localhost:3333/socket.io/',
-    },
-  }
+  plugins: [vue()]
 })

@@ -3,7 +3,7 @@
     <header class="flex-none px-safe h-12 md:h-9 text-lg md:text-xs">
       <div class="flex items-center px-3 h-full">
         <div class="md:flex-1 w-10 md:w-auto">
-          <div class="hidden md:flex items-center justify-start">
+          <!-- <div class="hidden md:flex items-center justify-start">
             <div class="mr-2 font-bold text-sm">こいこい！</div>
             <div>
               <a class="inline-flex items-center px-2 py-1 rounded hover:bg-gray-100" href="#" @click.prevent="">
@@ -15,7 +15,7 @@
                 出来役一覧
               </a>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="flex-1">
           <div class="flex items-center justify-center space-x-1">
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="md:flex-1 w-10 md:w-auto">
-          <div class="flex md:hidden items-center justify-end">
+          <div class="flex items-center justify-end">
             <a class="inline-flex items-center px-1 py-1 rounded hover:bg-gray-100" href="#" @click.prevent="toggleMenu">
               <svg v-if="menu" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -35,102 +35,29 @@
               </svg>
             </a>
           </div>
-          <div class="hidden md:flex items-center justify-end">
-            <div>
-              <a class="flex items-center justify-center px-2 py-1 rounded hover:bg-gray-100" href="#" title="退出" @click.prevent="exit">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
-                </svg>
-                <span class="ml-1">退出</span>
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </header>
     <div class="relative flex-1 px-safe h-full">
       <transition name="fade">
-        <div v-if="menu" class="absolute inset-0 z-30 divide-y bg-white">
-          <div class="py-3">
-            <div class="px-4 py-3 font-bold text-xl">こいこい！</div>
-            <div class="">
-              <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd" />
-                </svg>
-                <span class="flex-none ml-4 mr-auto">ルーム名</span>
-                <span class="mx-4 text-base opacity-70 truncate">#{{ room }}</span>
-                <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
-              </a>
-            </div>
-            <div class="">
-              <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
-                <span class="flex-none">
-                  <i v-if="settings.private" class="fas fa-lock fa-fw"></i>
-                  <i v-else class="fas fa-unlock fa-fw"></i>
-                </span>
-                <span class="flex-none ml-4 mr-auto">公開設定</span>
-                <span class="mx-4 text-base opacity-70 truncate">{{ settings.private ? 'プライベート' : 'オープン'}}</span>
-                <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
-              </a>
-            </div>
-            <div class="">
-              <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
-                <span class="flex-none"><i class="fas fa-user-edit fa-fw"></i></span>
-                <span class="flex-none ml-4 mr-auto">ニックネーム</span>
-                <span class="flex-auto mx-4 text-base opacity-70 truncate">{{ me?.name }}</span>
-                <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
-              </a>
-            </div>
-          </div>
-          <div class="py-3">
-            <div class="">
-              <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-                </svg>
-                <span class="flex-none ml-4 mr-auto">遊びかた</span>
-                <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
-              </a>
-            </div>
-            <div class="">
-              <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-                </svg>
-                <span class="flex-none ml-4 mr-auto">出来役一覧</span>
-                <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
-              </a>
-            </div>
-          </div>
-          <div class="py-3">
-            <div class="">
-              <a class="flex items-center px-4 py-2 text-lg" href="#" @click.prevent="">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
-                </svg>
-                <span class="flex-none ml-4 mr-auto">退出</span>
-                <span class="flex-none"><i class="fas fa-chevron-right"></i></span>
-              </a>
-            </div>
-          </div>
-          <div class="py-3">
-            <div class="px-4 py-2 text-sm">{{ version }}</div>
-          </div>
+        <div v-if="menu" class="absolute inset-0 z-30 p-4 md:p-10 bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-lg overflow-auto">
+          <room-menu></room-menu>
         </div>
       </transition>
-      <div class="flex flex-col md:flex-row h-full divide-x">
-        <main class="relative flex-1">
-          <div class="absolute inset-0">
-            <card-list></card-list>
-          </div>
-        </main>
-        <aside class="relative flex-none h-40 md:w-80 md:h-auto">
-          <div class="absolute inset-0">
-            <chat :room="room"></chat>
-          </div>
-        </aside>
-      </div>
+      <transition name="fade">
+        <div v-if="initialized" class="flex flex-col md:flex-row h-full divide-x">
+          <main class="relative flex-1">
+            <div class="absolute inset-0">
+              <card-list></card-list>
+            </div>
+          </main>
+          <aside class="relative flex-none h-40 md:w-80 md:h-auto">
+            <div class="absolute inset-0">
+              <chat :room="room"></chat>
+            </div>
+          </aside>
+        </div>
+      </transition>
     </div>
     <footer class="flex-none px-safe h-7 text-xs">
       <div class="flex items-stretch justify-between h-full">
@@ -176,15 +103,18 @@ import { computed, defineComponent, onMounted, reactive, ref, toRefs } from 'vue
 import { useStore } from '@/store'
 import { router } from '@/router'
 import { useRoute } from 'vue-router'
+import RoomMenu from '@/components/RoomMenu.vue'
 import Chat from '@/components/Chat.vue'
 import CardList from '@/components/CardList.vue'
 
 type ViewState = {
   menu: boolean,
+  init: boolean,
 }
 
 export default defineComponent({
   components: {
+    RoomMenu,
     Chat,
     CardList,
   },
@@ -196,10 +126,12 @@ export default defineComponent({
     const store = useStore()
     const version = computed(() => store.state.version)
     const me = computed(() => store.getters['auth/user'])
+    const roomId = computed(() => store.getters['room/roomId'])
     const settings = computed(() => store.getters['room/settings'])
 
     const state = reactive<ViewState>({
-      menu: false,
+      menu: computed(() => store.state.room.menu),
+      initialized: computed(() => roomId.value != ''),
     })
 
     store.dispatch('room/connect', room.value)
@@ -213,9 +145,7 @@ export default defineComponent({
       version,
       me,
       settings,
-      toggleMenu: () => {
-        state.menu = !state.menu
-      },
+      toggleMenu: () => store.dispatch('room/toggleMenu'),
       exit: () => {
         router.push({ name: 'start' })
       }

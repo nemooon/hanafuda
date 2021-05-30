@@ -16,9 +16,9 @@
         <div v-if="messages.length == 0" class="absolute inset-0 flex items-center justify-center h-full">
           <div class="text-2xs opacity-30">まだメッセージはありません</div>
         </div>
-        <div v-if="typing.length > 0" class="absolute inset-x-2 bottom-0 text-xs">
+        <!-- <div v-if="typing.length > 0" class="absolute inset-x-2 bottom-0 text-xs">
           {{ typing.map(user => user.name).join(',') }}さんが入力中...
-        </div>
+        </div> -->
       </div>
       <div class="flex-none px-2 pb-2">
         <form @submit.prevent="say">
@@ -62,7 +62,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
 
-    store.dispatch('room/messages/connect', props.room)
+    store.dispatch('room/messages/connect')
 
     const state = reactive({
       message: '',
@@ -77,7 +77,7 @@ export default defineComponent({
       })
     }
 
-    const typing = computed(() => store.state.chat.typing)
+    // const typing = computed(() => store.state.chat.typing)
     // const messages = computed(() => store.state.chat.messages)
     const messages = computed(() => store.state.room.messages.messages)
     watch(() => messages.value.length, () => logScroll())
@@ -91,7 +91,7 @@ export default defineComponent({
       ...props,
       ...toRefs(state),
       log,
-      typing,
+      // typing,
       messages,
       format,
       say: () => {

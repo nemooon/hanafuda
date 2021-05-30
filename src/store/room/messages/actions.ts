@@ -7,23 +7,26 @@ import { parseISO } from 'date-fns'
 
 const actions: ActionTree<MessagesState, RootState> = {
 
-  connect: async ({ commit }, room: string) => {
-    const q = query(collection(db, `rooms/${room}/messages`), orderBy('receive_at'))
+  connect: async ({ commit, rootGetters }) => {
+    const roomId = rootGetters['room/roomId']
+    const q = query(collection(db, `rooms/${roomId}/messages`), orderBy('receive_at'))
     const unsubscribe = onSnapshot(q, async (querySnapshot) => {
-      const messages: object[] = []
-      await Promise.all(querySnapshot.docs.map(async doc => {
-        const message = doc.data()
-        const user = (await getDoc(message.user)).data()
-        messages.push({
-          id: message.id,
-          date: message.receive_at ? message.receive_at.toDate() : new Date(),
-          sender: user,
-          body: message.body,
-        })
-      }))
-      commit('sync', messages)
+      if (querySnapshot.metadata.hasPendingWrites == false) {
+        const messages: object[] = []
+        await Promise.all(querySnapshot.docs.map(async doc => {
+          const message = doc.data()
+          const user = (await getDoc(message.user)).data()
+          messages.push({
+            id: message.id,
+            date: message.receive_at ? message.receive_at.toDate() : new Date(),
+            sender: user,
+            body: message.body,
+          })
+        }))
+        commit('sync', messages)
+      }
     })
-    commit('connect', { room, unsubscribe })
+    commit('connect', { room: roomId, unsubscribe })
   },
 
   disconnect: async ({ commit, state }) => {

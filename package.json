@@ -1,15 +1,10 @@
 {
   "name": "hanafuda",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview",
-    "socket": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^4.0.2"
+    "serve": "vite preview"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
@@ -22,7 +17,6 @@
     "firebase": "^9.0.0-beta.2",
     "pixi.js": "^6.0.4",
     "postcss": "^8.2.14",
-    "socket.io-client": "^4.0.2",
     "tailwindcss": "^2.1.2",
     "vite": "^2.2.3",
     "vue": "^3.0.11",
